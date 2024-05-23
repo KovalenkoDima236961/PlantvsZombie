@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: floatingMessages.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: floatingMessages.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents a floating message displayed on the canvas.
+ * @class
+ */
+export class floatingMessage {
+    /**
+     * Create a new instance of FloatingMessage.
+     * @param {string} value - The text value of the message.
+     * @param {number} x - The x-coordinate of the message.
+     * @param {number} y - The y-coordinate of the message.
+     * @param {number} size - The font size of the message.
+     * @param {string} color - The color of the message.
+     */
+    constructor(value, x, y, size, color) {
+      this.value = value;
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.lifeSpan = 0;
+      this.color = color;
+      this.opacity = 1;
+    }
+  
+    /**
+     * Update the position, lifespan, and opacity of the floating message.
+     */
+    update() {
+      this.y -= 0.3;
+      this.lifeSpan += 1;
+      if (this.opacity > 0.01) {
+        this.opacity -= 0.01;
+      }
+    }
+  
+    /**
+     * Draw the floating message on the canvas.
+     * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
+     */
+    draw(ctx) {
+      ctx.globalAlpha = this.opacity;
+      ctx.fillStyle = this.color;
+      ctx.font = this.size + 'px';
+      ctx.fillText(this.value, this.x, this.y);
+      ctx.globalAlpha = 1;
+    }
+  }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Arrow.html">Arrow</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Defender.html">Defender</a></li><li><a href="DoubleLineEnemy.html">DoubleLineEnemy</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="JumpingZombie.html">JumpingZombie</a></li><li><a href="LEVEL1.html">LEVEL1</a></li><li><a href="LEVEL2.html">LEVEL2</a></li><li><a href="LEVEL3.html">LEVEL3</a></li><li><a href="MeleeDefender.html">MeleeDefender</a></li><li><a href="Mine.html">Mine</a></li><li><a href="NonShootingDefender.html">NonShootingDefender</a></li><li><a href="NormalZombie.html">NormalZombie</a></li><li><a href="Observer.html">Observer</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Resource.html">Resource</a></li><li><a href="ShootingDefender.html">ShootingDefender</a></li><li><a href="SkeletonArcher.html">SkeletonArcher</a></li><li><a href="floatingMessage.html">floatingMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#animate">animate</a></li><li><a href="global.html#arrowImage">arrowImage</a></li><li><a href="global.html#back">back</a></li><li><a href="global.html#bosses">bosses</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#canvasPosition">canvasPosition</a></li><li><a href="global.html#card1">card1</a></li><li><a href="global.html#card2">card2</a></li><li><a href="global.html#card3">card3</a></li><li><a href="global.html#card4">card4</a></li><li><a href="global.html#chooseDefender">chooseDefender</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#clearGameElements">clearGameElements</a></li><li><a href="global.html#collision">collision</a></li><li><a href="global.html#controlsBar">controlsBar</a></li><li><a href="global.html#createDefender">createDefender</a></li><li><a href="global.html#ctx">ctx</a></li><li><a href="global.html#defender1">defender1</a></li><li><a href="global.html#defender2">defender2</a></li><li><a href="global.html#defender3">defender3</a></li><li><a href="global.html#drawArrows">drawArrows</a></li><li><a href="global.html#drawDefenderCards">drawDefenderCards</a></li><li><a href="global.html#drawDefenders">drawDefenders</a></li><li><a href="global.html#drawProjectiles">drawProjectiles</a></li><li><a href="global.html#enemy1">enemy1</a></li><li><a href="global.html#enemy2">enemy2</a></li><li><a href="global.html#gameElements">gameElements</a></li><li><a href="global.html#gameSettings">gameSettings</a></li><li><a href="global.html#getDefenderCost">getDefenderCost</a></li><li><a href="global.html#handleDefenders">handleDefenders</a></li><li><a href="global.html#handleGameGrid">handleGameGrid</a></li><li><a href="global.html#handleGameStatus">handleGameStatus</a></li><li><a href="global.html#mine">mine</a></li><li><a href="global.html#model">model</a></li><li><a href="global.html#mouse">mouse</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#sett">sett</a></li><li><a href="global.html#skeletonArcherType">skeletonArcherType</a></li><li><a href="global.html#stopGame">stopGame</a></li><li><a href="global.html#updateDefenderCards">updateDefenderCards</a></li><li><a href="global.html#updateEnemies">updateEnemies</a></li><li><a href="global.html#updateProjectiles">updateProjectiles</a></li><li><a href="global.html#updateResources">updateResources</a></li><li><a href="global.html#updateSkeletonArcherShooting">updateSkeletonArcherShooting</a></li><li><a href="global.html#view">view</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun May 07 2023 14:32:38 GMT+0200 (за центральноєвропейським літнім часом)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

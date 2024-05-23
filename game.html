@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Game Menu</title>
+  <link rel="shortcut icon" href="./DOM/Game/PHOTO/logo.jpg" type="image/x-icon">
+  <link rel="stylesheet" href="./CSS/style.css">
+  <script type="module" src="./DOM/DOM.js"></script>
+</head>
+<body>
+  <div id="main">
+    <h1>Main Menu</h1>
+    <ul class="menu">
+      <li><a href="#" id="level-btn">Levels</a></li>
+      <li><a href="#" id="settings-btn">Settings</a></li>
+      <li><a href="#" id="about-btn">About Me</a></li>
+    </ul>
+  </div>
+  <div id="settings-menu" class="submenu">
+    <h2>Settings</h2>
+    <button id="back-btn" class="closed">Go back</button>
+    <p>Select a setting:</p>
+    <audio id="my-audio" src="./DOM/Game/Music/igor-video-game-soundtrack-organ-gothic-141567.mp3"></audio>
+    <label for="music-volume">Music volume:</label>
+    <input type="range" id="music-volume" name="music-volume" min="0" max="1" step="0.1" value="0.5">
+    <button id="music-btn">Music management</button>
+    <label for="sound-volume">Sound volume:</label>
+    <input type="range" id="sound-volume" name="sound-volume" min="0" max="1" step="0.1" value="0.5">
+    <button id="sound-btn">Switch off sounds</button>
+</div>
+
+
+<div id="about-menu" class="submenu">
+  <h2 class="head">About me</h2>
+  <div class="cart">
+    <img src="./DOM/Game/PHOTO/1640356198_37-abrakadabra-fun-p-ava-dlya-servera-diskorda-44.jpg" alt="photo">
+    <h1>Kovalenko Dmytro</h1>
+    <p>Student</p>
+    <p>I study at STU FIIT</p>
+    <p>Place of residence: Bratislava</p>
+    <p>Contact information:xkovalenko@stuba.sk</p>
+  </div>
+  <h2 class="head">About the game</h2>
+  <div class="info">
+    <p>
+      1.Start the game "Plant vs Zombie".<br>
+      2.Choose one of the proposed game levels in which you will defend yourself against zombies by installing different defenders.<br>
+      3.The game is controlled with the mouse.<br> 
+      4.The player can place plants on the lawn by hovering over an empty cell with a black square to summon additional defenders,
+      hover over the top bar and select from the options.<br>
+      5.When zombies appear, your defenders will automatically attack them. Place your defenders strategically to stop the zombies before they reach your home.<br>
+      6.For every zombie you destroy, you get money that can be used to buy new defenders and improve existing ones.</p>
+    </div>
+    <div class="game-photo">
+      <img width="900px" height="600px" src="./DOM/Game/PHOTO/Game pole.png" alt="">
+    </div>
+    <button id="back-btn2" class="closed">Go back</button>
+</div>
+
+<div id="multiplayer-menu" class="submenu">
+  <h2>Levels</h2>
+  <p>Select a level:</p>
+  <main class="container">
+    <section class="card">
+        <div class="product-image">
+            <img class="img" src="./DOM/Game/PHOTO/background.png" draggable="false">
+        </div>
+        <div class="product-info">
+            <h2>Level 1</h2>
+            <p>City</p>
+            <div id="first-level" class="price"></div>
+        </div>
+        <div class="btn">
+            <button class="buy-btn" id="level1">Go</button>
+        </div>
+    </section>
+    <section class="card card-blue">
+        <div class="product-image">
+            <img class="img" src="./DOM/Game/PHOTO/game_background_3.1.png" draggable="false">
+        </div>
+        <div class="product-info">
+            <h2>Level 2</h2>  
+            <p>Forest</p>
+            <div id="2-level" class="price"></div>
+        </div>
+        <div class="btn">
+            <button class="buy-btn" id="level2">Go</button>
+        </div>
+    </section>
+    <section class="card card-pink">
+        <div class="product-image">
+            <img class="img" src= "./DOM/Game/PHOTO/back3.png" draggable="false">
+        </div>
+        <div class="product-info">
+            <h2>Level 3</h2>
+            <p>Dark forest</p>
+            <div id="3-level" class="price"></div>
+        </div>
+        <div class="btn">
+            <button class="buy-btn" id="level3">Go</button>
+        </div>
+    </section>
+</main>
+  <button id="back-btn3" class="closed">Go back</button>
+</div>
+<div class="submenu" id="game">
+    <canvas id="canvas1"></canvas>
+    <div class="buttons">
+      <button id="musics" class="closed">Music</button>
+      <button id="soundv" class="closed">Sound</button>
+      <button id="back-btn4" class="closed">Go back</button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,339 @@
+body {
+    background-color: #f2f2f2;
+    font-family: Arial, sans-serif;
+}
+h1 {
+    color: #333;
+    text-align: center;
+    margin-top: 50px;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+li {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+a {
+    display: block;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+a:hover {
+    background-color: #666;
+}
+.submenu {
+    display: none;
+    background-color: #eee;
+    border-radius: 5px;
+}
+.submenu h2 {
+    margin-top: 0;
+}
+.submenu label {
+    display: block;
+    margin-top: 10px;
+}
+.submenu input[type="range"] {
+    width: 100%;
+}
+.submenu button {
+    margin-top: 10px;
+}
+
+
+label {
+    font-size: 16px;
+    color: #ff7f00;
+    display: block;
+    margin-top: 20px;
+  }
+  
+  input[type="range"] {
+    width: 100%;
+    height: 5px;
+    background-color: #333;
+    border-radius: 5px;
+    appearance: none;
+    margin-top: 5px;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background-color: #ff7f00;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: #ff9500;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background-color: #ff7f00;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  input[type="range"]::-moz-range-thumb:hover {
+    background-color: #ff9500;
+  }
+  
+  input[type="range"]::-ms-thumb {
+    width: 15px;
+    height: 15px;
+    background-color: #ff7f00;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  input[type="range"]::-ms-thumb:hover {
+    background-color: #ff9500;
+  }
+  
+  #music-btn,
+  #sound-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #ff7f00;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+#music-btn:hover,
+#sound-btn:hover {
+    background-color: #ff9500;
+}
+.cart {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+.cart img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+.cart h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.card p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+.head {
+    font-size: 30px;
+    color: #333;
+    margin-top: 30px;
+    transition: color 0.3s ease;
+    text-align: center;
+}
+  
+.head:hover {
+    color: #ff0000;
+}
+.info {
+    width: 900px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-top: 30px;
+} 
+.info p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 1.4;
+}
+.game-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+.closed {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.closed:hover {
+    background-color: #666;
+}
+.buttons  {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+:root {
+    --dark-color-lighten:#f2f5ff;
+    --red-card:#a62121;
+    --blue-card:#4bb7e6;
+    --btn:#141414;
+    --btn-hover:#3a3a3a;
+    --text:#fbf7f7;
+}
+#multiplayer-menu button {
+    font-family: sans-serif;
+    display: inline-block;
+    border: none;
+    outline: none;
+    border-radius: 0.2rem;
+    color: var(--text);
+    cursor: pointer;
+}
+#multiplayer-menu a {
+    text-decoration: none;
+}
+.img {
+    max-width: 100%;
+    height: 80%;
+    user-select: none;
+}
+.container {
+    height: 100%;
+    width: 850px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.card {
+    position: relative;
+    padding: 1rem;
+    width: 350px;
+    height: 450px;
+    box-shadow: -1px 15px 30px -12px rgb(32, 32, 32);
+    border-radius: 0.9rem;
+    background-color: var(--red-card);
+    cursor: pointer;
+}
+.card-blue {
+    background: var(--blue-card);
+}
+.card-pink {
+    background: rgb(65, 51, 38);
+}
+.product-image {    
+    height: 230px;
+    width: 100%;
+    transform: translate(0,-1.5rem);
+    transition: transform 500ms ease-in-out;
+    filter: drop-shadow(5px 10px 15px rgba(8, 9, 13, 0.4));
+}
+.product-info {
+    text-align: center;
+}
+.card:hover.product-image {
+    transform: translate(-1.5rem,-7rem) rotate(-20deg);
+}
+.product-info h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+.product-info p {
+    margin: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.price {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.btn {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 0.8rem;
+}
+.buy-btn {
+    background-color: var(--btn);
+    padding: 0.6rem 3.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: 300ms ease;
+}
+.buy-btn:hover {
+    background-color: var(--btn-hover);
+}
+.back-btn3 {
+    margin: auto;
+}
+@media screen and (max-width:800px) {
+    body {
+        height: auto;
+    }
+    .container {
+        padding: 2rem 0;
+        width: 100%;
+        flex-direction: column;
+        gap: 3rem;
+    }
+}
+
+
+.menu {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+  .menu li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  .menu li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 24px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #777;
+    transition: all 0.3s ease;
+  }
+
+  .menu li a:hover {
+    background-color: #999;
+  }
+

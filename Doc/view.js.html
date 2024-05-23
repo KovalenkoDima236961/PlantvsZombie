@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: view.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: view.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { gameElements } from "./controller.js";
+import { gameSettings } from "./controller.js";
+import { ctx } from "./controller.js";
+import { floatingMessage } from "./floatingMessages.js";
+import { collision } from "./controller.js";
+
+/**
+ * Draws the game grid by iterating through the gameElements.gameGrid array and calling the draw method on each Cell object.
+ */
+export function handleGameGrid() {
+    for (let i = 0; i &lt; gameElements.gameGrid.length; i++) {
+        gameElements.gameGrid[i].draw(ctx);
+    }
+}
+/**
+* Draws the projectiles by iterating through the gameElements.projectiles array and calling the draw method on each projectile object.
+*/
+export function drawProjectiles() {
+    for (let i = 0; i &lt; gameElements.projectiles.length; i++) {
+        gameElements.projectiles[i].draw(ctx);
+    }
+}
+/**
+* Draws the arrows by iterating through the gameElements.arrows array and calling the draw method on each arrow object.
+*/
+export function drawArrows() {
+    for (let i = 0; i &lt; gameElements.arrows.length; i++) {
+        gameElements.arrows[i].draw(ctx);
+    }
+}
+/**
+ * Draws the defenders on the canvas.
+ * Iterates through the gameElements.defenders array and calls the draw method for each defender.
+ */
+export function drawDefenders() {
+    for (let i = 0; i &lt; gameElements.defenders.length; i++) {
+        const defender = gameElements.defenders[i];
+        defender.draw(ctx);
+    }
+}
+/**
+ * Draws the defender cards on the canvas.
+ * @param {Object[]} cards - An array of defender card objects.
+ */
+export function drawDefenderCards(cards) {
+    ctx.lineWidth = 2;
+  
+    for (let i = 0; i &lt; cards.length; i++) {
+      const card = cards[i];
+      const strokeColor = (gameSettings.chosenDefender === i + 1) ? 'gold' : 'black';
+  
+      ctx.fillStyle = 'rgba(0,0,0,0.2)';
+      ctx.fillRect(card.x, card.y, card.width, card.height);
+      ctx.drawImage(card.image, 0, 0, 125, 135, card.x + 10, 10, 125/2, 135/2);
+      ctx.strokeStyle = strokeColor;
+      ctx.strokeRect(card.x, card.y, card.width, card.height);
+    }
+}
+export function drawFloatingMessages() {
+    for (const message of gameElements.floatingMessages) {
+        message.draw(ctx);
+    }
+}
+export function drawEnemies() {
+    const { enemies } = gameElements;
+    // Iterate over enemies and draw them
+    for (let enemy of enemies) {
+      enemy.draw(ctx);
+    }
+}
+/**
+ * Draws the resources on the canvas and handles resource collection.
+ */
+import { mouse } from "./controller.js";
+export function drawResources() {
+    const { resources, floatingMessages } = gameElements;
+  
+    for (let i = resources.length - 1; i >= 0; i--) {
+      const resource = resources[i];
+      resource.draw(ctx);
+  
+      if (collision(resource, mouse)) {
+        gameSettings.numberOfResources += resource.amount;
+        floatingMessages.push(new floatingMessage('+' + resource.amount, resource.x, resource.y, 30));
+        floatingMessages.push(new floatingMessage('+' + resource.amount, 470, 85, 30));
+        resources.splice(i, 1);
+      }
+    }
+}
+/**
+ * Handles the game status, including displaying score, resources, and game over/win messages.
+ *
+ * @param {object} mainLevel - The main level object containing level settings.
+ */
+export function handleGameStatus(mainLevel) {
+    const { numberOfResources, gameOver } = gameSettings;
+    const { enemies } = gameElements;
+  
+    // Display score and resource count
+    ctx.fillStyle = 'gold';
+    ctx.font = '30px Orbitron';
+    ctx.fillText('Score: ' + mainLevel.score, 340, 40);
+    ctx.fillText('Resources: ' + numberOfResources, 340, 80);
+  
+    // Display game over or level complete messages
+    if (gameOver) {
+      ctx.fillStyle = 'black';
+      ctx.font = '90px Orbitron';
+      ctx.fillText('GAME OVER', 135, 330);
+      mainLevel.next = false;
+    } else if (enemies.length === 0 &amp;&amp; gameSettings.bossCount === mainLevel.count) {
+      ctx.fillStyle = 'black';
+      ctx.font = '60px Orbitron';
+      ctx.fillText('LEVEL COMPLETE', 130, 300);
+      ctx.font = '30px Orbitron';
+      ctx.fillText('You win with ' + mainLevel.score + ' points!', 134, 340);
+      mainLevel.next = true;
+    }
+}
+/**
+ * Renders the game view.
+ * @param {Object} mainLevel - The main level object.
+ */
+export function view(mainLevel) {
+    // Call functions to handle various aspects of the game view
+    handleGameGrid();
+    drawProjectiles();
+    drawDefenders();
+    drawArrows();
+    drawFloatingMessages();
+    drawEnemies();
+    drawResources();
+    handleGameStatus(mainLevel);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Arrow.html">Arrow</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Defender.html">Defender</a></li><li><a href="DoubleLineEnemy.html">DoubleLineEnemy</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="JumpingZombie.html">JumpingZombie</a></li><li><a href="LEVEL1.html">LEVEL1</a></li><li><a href="LEVEL2.html">LEVEL2</a></li><li><a href="LEVEL3.html">LEVEL3</a></li><li><a href="MeleeDefender.html">MeleeDefender</a></li><li><a href="Mine.html">Mine</a></li><li><a href="NonShootingDefender.html">NonShootingDefender</a></li><li><a href="NormalZombie.html">NormalZombie</a></li><li><a href="Observer.html">Observer</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Resource.html">Resource</a></li><li><a href="ShootingDefender.html">ShootingDefender</a></li><li><a href="SkeletonArcher.html">SkeletonArcher</a></li><li><a href="floatingMessage.html">floatingMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#animate">animate</a></li><li><a href="global.html#arrowImage">arrowImage</a></li><li><a href="global.html#back">back</a></li><li><a href="global.html#bosses">bosses</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#canvasPosition">canvasPosition</a></li><li><a href="global.html#card1">card1</a></li><li><a href="global.html#card2">card2</a></li><li><a href="global.html#card3">card3</a></li><li><a href="global.html#card4">card4</a></li><li><a href="global.html#chooseDefender">chooseDefender</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#clearGameElements">clearGameElements</a></li><li><a href="global.html#collision">collision</a></li><li><a href="global.html#controlsBar">controlsBar</a></li><li><a href="global.html#createDefender">createDefender</a></li><li><a href="global.html#ctx">ctx</a></li><li><a href="global.html#defender1">defender1</a></li><li><a href="global.html#defender2">defender2</a></li><li><a href="global.html#defender3">defender3</a></li><li><a href="global.html#drawArrows">drawArrows</a></li><li><a href="global.html#drawDefenderCards">drawDefenderCards</a></li><li><a href="global.html#drawDefenders">drawDefenders</a></li><li><a href="global.html#drawProjectiles">drawProjectiles</a></li><li><a href="global.html#enemy1">enemy1</a></li><li><a href="global.html#enemy2">enemy2</a></li><li><a href="global.html#gameElements">gameElements</a></li><li><a href="global.html#gameSettings">gameSettings</a></li><li><a href="global.html#getDefenderCost">getDefenderCost</a></li><li><a href="global.html#handleDefenders">handleDefenders</a></li><li><a href="global.html#handleGameGrid">handleGameGrid</a></li><li><a href="global.html#handleGameStatus">handleGameStatus</a></li><li><a href="global.html#mine">mine</a></li><li><a href="global.html#model">model</a></li><li><a href="global.html#mouse">mouse</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#sett">sett</a></li><li><a href="global.html#skeletonArcherType">skeletonArcherType</a></li><li><a href="global.html#stopGame">stopGame</a></li><li><a href="global.html#updateDefenderCards">updateDefenderCards</a></li><li><a href="global.html#updateEnemies">updateEnemies</a></li><li><a href="global.html#updateProjectiles">updateProjectiles</a></li><li><a href="global.html#updateResources">updateResources</a></li><li><a href="global.html#updateSkeletonArcherShooting">updateSkeletonArcherShooting</a></li><li><a href="global.html#view">view</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun May 07 2023 14:32:38 GMT+0200 (за центральноєвропейським літнім часом)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

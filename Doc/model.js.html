@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: model.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: model.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+* Creates the game grid by populating the gameElements.gameGrid array with Cell objects.
+*/
+import { Arrow } from "./enemy.js";
+import { Cell } from "./cell.js";
+import { gameElements } from "./controller.js";
+import { gameSettings } from "./controller.js";
+import { NormalZombie,JumpingZombie, SkeletonArcher, Enemy, DoubleLineEnemy} from "./enemy.js";
+import { Resource } from "./resource.js";
+import { canvas } from "./controller.js";
+import { enemy1 } from "./controller.js";
+import { enemy2 } from "./controller.js";
+import { collision } from "./controller.js";
+import { floatingMessage } from "./floatingMessages.js";
+import { Mine } from "./defender.js";
+
+export function createGrid() {
+  for (let y = gameSettings.cellSize; y &lt; canvas.height; y += gameSettings.cellSize) {
+      for (let x = 0; x &lt; canvas.width; x += gameSettings.cellSize) {
+          gameElements.gameGrid.push(new Cell(x, y));
+      }
+  }
+}
+/**
+ * Updates the projectiles by iterating through the gameElements.projectiles array and calling the update method on each projectile object.
+ * Handles collision detection between projectiles and enemies, reducing enemy health and removing projectiles upon collision.
+ * Removes projectiles that have reached the right edge of the canvas.
+ */
+export function updateProjectiles() {
+    let i = 0;
+    while (i &lt; gameElements.projectiles.length) {
+        gameElements.projectiles[i].update();
+  
+        let j = 0;
+        while (j &lt; gameElements.enemies.length) {
+            if (gameElements.enemies[j] &amp;&amp; gameElements.projectiles[i] &amp;&amp; collision(gameElements.projectiles[i], gameElements.enemies[j])) {
+                gameElements.enemies[j].health -= gameElements.projectiles[i].power;
+                gameElements.projectiles.splice(i, 1);
+                i--;
+                break;
+            }
+            j++;
+        }
+  
+        if (gameElements.projectiles[i] &amp;&amp; gameElements.projectiles[i].x > canvas.width - gameSettings.cellSize) {
+            gameElements.projectiles.splice(i, 1);
+            i--;
+        }
+        i++;
+    }
+}
+/**
+ * Updates the shooting behavior of Skeleton Archer enemies.
+ * Iterates through the gameElements.enemies array and checks if each enemy is an instance of SkeletonArcher.
+ * If it's time for the Skeleton Archer to shoot a new arrow, a new arrow object is created and added to the gameElements.arrows array.
+ * The arrowCooldown is then set to a new value.
+ * Decreases the arrowCooldown for each Skeleton Archer.
+ * Updates the position of each arrow and checks for collisions between arrows and defenders, reducing defender health and removing arrows upon collision.
+ */
+export function updateSkeletonArcherShooting() {
+    for (let i = 0; i &lt; gameElements.enemies.length; i++) {
+        if (gameElements.enemies[i] instanceof SkeletonArcher) {
+            const skeletonArcher = gameElements.enemies[i];
+  
+            if (skeletonArcher.arrowCooldown &lt;= 0) {
+                const arrow = new Arrow(skeletonArcher.x - 70, skeletonArcher.y + 35, -1);
+                gameElements.arrows.push(arrow);
+                skeletonArcher.arrowCooldown = Math.random() * 75 + 75;
+            }
+            skeletonArcher.arrowCooldown--;
+  
+            for (let j = 0; j &lt; gameElements.arrows.length; j++) {
+                const arrow = gameElements.arrows[j];
+                if (arrow instanceof Arrow) {
+                    arrow.update();
+                    for (let k = 0; k &lt; gameElements.defenders.length; k++) {
+                        const defender = gameElements.defenders[k];
+                        if (collision(arrow, defender)) {
+                            defender.health -= arrow.power;
+                            gameElements.arrows.splice(j, 1);
+                            j--;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Updates the behavior and interactions of defenders.
+ * Iterates through the gameElements.defenders array and performs the following actions for each defender:
+ * - Updates the defender's position and behavior.
+ * - Checks if the defender's y-coordinate matches any enemy positions to determine if the defender should start shooting.
+ * - Checks for collisions between defenders and enemies, reducing defender health and enemy movement if a collision occurs.
+ * - Handles the attack animation and reduces enemy health if the defender is attacking.
+ * - Handles defender destruction and enemy movement if the defender's health reaches zero.
+ */
+export function handleDefenders() {
+    for (let i = 0; i &lt; gameElements.defenders.length; i++) {
+        const defender = gameElements.defenders[i];
+  
+        if (!defender) {
+            continue;
+        }
+  
+        defender.update();
+  
+        if (defender.y &amp;&amp; gameElements.enemyPositions.includes(defender.y)) {
+            defender.shooting = true;
+        } else {
+            defender.shooting = false;
+        }
+  
+        for (let j = 0; j &lt; gameElements.enemies.length; j++) {
+            const enemy = gameElements.enemies[j];
+  
+            if (
+                defender &amp;&amp;
+                enemy &amp;&amp;
+                collision(defender, enemy) &amp;&amp;
+                Math.abs(enemy.y - defender.y) &lt; gameSettings.cellSize / 2
+            ) {
+                enemy.movement = 0;
+                defender.health -= 0.5;
+  
+                if (defender.frameX === 4 &amp;&amp; !defender.attacking) {
+                    defender.attacking = true;
+  
+                    setTimeout(() => {
+                        defender.attacking = false;
+                    }, 280);
+  
+                    if (enemy &amp;&amp; enemy.health &lt;= 0) {
+                        gameElements.enemies.splice(j, 1);
+                        j--;
+                    } else {
+                        enemy.health -= defender.damage;
+                    }
+                }
+            }
+        }
+  
+        if (defender &amp;&amp; defender.health &lt;= 0) {
+            if (defender instanceof Mine) {
+                defender.explode();
+            }
+  
+            for (let k = 0; k &lt; gameElements.enemies.length; k++) {
+                const enemy = gameElements.enemies[k];
+  
+                if (enemy &amp;&amp; enemy.y === defender.y &amp;&amp; enemy.health > 0) {
+                    enemy.movement = enemy.speed;
+                    break;
+                }
+            }
+  
+            gameElements.defenders.splice(i, 1);
+            i--;
+        }
+    }
+}
+/**
+ * Updates the selected defender card based on mouse interaction.
+ * @param {Object} mouse - The mouse object containing its current state.
+ * @param {Object[]} cards - An array of defender card objects.
+ */
+export function updateDefenderCards(mouse, cards) {
+    for (let i = 0; i &lt; cards.length; i++) {
+      const card = cards[i];
+  
+      if (collision(mouse, card) &amp;&amp; mouse.clicked) {
+        gameSettings.chosenDefender = i + 1;
+      }
+    }
+}
+export function updateFloatingMessages() {
+    for (const message of gameElements.floatingMessages) {
+        message.update();
+        if (message.lifeSpan >= 50) {
+            const index = gameElements.floatingMessages.indexOf(message);
+            gameElements.floatingMessages.splice(index, 1);
+        }
+    }
+}
+/**
+ * Updates the enemies in the game.
+ *
+ * @param {object} mainLevel - The main level object containing level settings.
+ */
+export function updateEnemies(mainLevel) {
+    const { enemies, enemyPositions, defenders, floatingMessages } = gameElements;
+    const { cellSize, gameOver, cellGap} = gameSettings;
+    const allEnemiesDefeated = enemies.length === 0 &amp;&amp; enemyPositions.length === 0;
+    const defendersOnSameLine = {};
+  
+    // Iterate over enemies and update them
+    for (let i = 0; i &lt; enemies.length; i++){
+      const enemy = enemies[i];
+      enemy.update();
+      if (enemy.x &lt; 0) {
+        gameSettings.gameOver = true;
+      }
+  
+      // Check for defenders on the same line
+      const defendersOnLine = defenders.filter(defender => Math.abs(defender.y - enemy.y) &lt; cellSize / 2);
+      defendersOnLine.forEach(defender => defender.shooting = true);
+      defendersOnSameLine[enemy.y] = defendersOnLine;
+      
+      // Check if any defenders on the same line have been defeated
+      const defendersDefeated = defendersOnLine.filter(defender => defender.health &lt;= 0);
+      if (defendersDefeated.length > 0) {
+        defendersOnLine.forEach(defender => {
+          if (defender.health > 0) {
+            // Set shooting to true for any defenders that are still alive on the same line
+            defender.shooting = true;
+          }
+        });
+      }
+      
+      if (enemy.health &lt;= 0) {
+        const gainedResources = enemy.maxHealth !== 0 ? enemy.maxHealth / 8.5 : 0;
+        floatingMessages.push(new floatingMessage('+' + Math.trunc(gainedResources), enemy.x, enemy.y, 30));
+        floatingMessages.push(new floatingMessage('+' + Math.trunc(gainedResources), 470, 85, 30));
+        gameSettings.numberOfResources += Math.trunc(gainedResources);
+        mainLevel.score += Math.trunc(gainedResources);
+        const index = enemyPositions.indexOf(enemy.y);
+        enemyPositions.splice(index, 1);
+        enemies.splice(i, 1);
+        i--;
+        if (enemy instanceof JumpingZombie) {
+          //jumpingZombiesCount--;
+        }
+      }
+    }
+  
+    // Spawn new enemies
+    if (!gameOver &amp;&amp; gameSettings.frame % mainLevel.enemiesInterval === 0) {
+      if (mainLevel.score &lt; mainLevel.winningScore ) {
+        const verticalPosition = Math.floor(Math.random() * 5 + 1) * cellSize + cellGap;
+        const enemyType = Math.random() &lt; 0.5 ? enemy1 : enemy2;
+  
+        if (enemyType === enemy1) {
+          enemies.push(new NormalZombie(verticalPosition,canvas.width));
+          enemyPositions.push(verticalPosition);
+        } else if(enemyType === enemy2) {
+          if (gameSettings.count1234 &lt; mainLevel.jump) {
+              const position = [2 * cellSize + cellGap, 4 * cellSize + cellGap][Math.floor(Math.random() * 2)];
+              enemies.push(new JumpingZombie(position,canvas.width,canvas.height));
+              gameSettings.count1234++;
+              enemyPositions.push(position);
+          }
+        }
+  
+        if (mainLevel.enemiesInterval > 120) {
+          mainLevel.enemiesInterval -= 50;
+        }
+    } else if (mainLevel.score >= mainLevel.winningScore &amp;&amp; gameSettings.bossCount &lt; mainLevel.count) {
+      if(mainLevel.boss ===  1){
+        console.log("BOss");
+        const verticalPosition3 = [2 * cellSize + cellGap, 3 * cellSize + cellGap][Math.floor(Math.random() * 2)];
+        enemies.push(new DoubleLineEnemy(verticalPosition3,canvas.width));
+        enemyPositions.push(verticalPosition3);
+      }else if(mainLevel.boss === 2){
+        const verticalPosition12 = Math.floor(Math.random() * 5 + 1) * cellSize + cellGap;
+        enemies.push(new SkeletonArcher(verticalPosition12,canvas.width));
+        enemyPositions.push(verticalPosition12);
+      }else if(mainLevel.boss === 3 &amp;&amp; gameSettings.bossCount &lt; (mainLevel.count - 1)){
+        const verticalPosition3 = [2 * cellSize + cellGap, 3 * cellSize + cellGap][Math.floor(Math.random() * 2)];
+        const verticalPosition31 = [2 * cellSize + cellGap, 3 * cellSize + cellGap][Math.floor(Math.random() * 2)];
+        enemies.push(new DoubleLineEnemy(verticalPosition3,canvas.width));
+        enemyPositions.push(verticalPosition3);
+        ///const verticalPosition13 = [1 * cellSize + cellGap, 3 * cellSize + cellGap][Math.floor(Math.random() * 2)];
+        enemies.push(new SkeletonArcher(verticalPosition31,canvas.width));
+        enemyPositions.push(verticalPosition3);
+      }
+      gameSettings.bossCount++;
+    }
+  }
+
+  // Set shooting to false for defenders that are not on the same line as any enemy
+  defenders.forEach(defender => {
+    if (!defendersOnSameLine[defender.y]) {
+      defender.shooting = false;
+    }
+  });
+}
+/**
+ * Updates the resources in the game.
+ *
+ * @param {object} mainLevel - The main level object containing level settings.
+ */
+export function updateResources(mainLevel) {
+    const { resources } = gameElements;
+    const { frame } = gameSettings;
+  
+    // Spawn new resources
+    if (frame % 500 === 0 &amp;&amp; mainLevel.score &lt;= mainLevel.winningScore) {
+      resources.push(new Resource(canvas.width));
+    }
+}
+
+/**
+ * Updates the game model.
+ * @param {Object} mainLevel - The main level object.
+ */
+export function model(mainLevel) {
+  // Call functions to update different aspects of the game model
+  updateProjectiles();
+  handleDefenders();
+  updateFloatingMessages();
+  updateSkeletonArcherShooting();
+  updateEnemies(mainLevel);
+  updateResources(mainLevel);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Arrow.html">Arrow</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Defender.html">Defender</a></li><li><a href="DoubleLineEnemy.html">DoubleLineEnemy</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="JumpingZombie.html">JumpingZombie</a></li><li><a href="LEVEL1.html">LEVEL1</a></li><li><a href="LEVEL2.html">LEVEL2</a></li><li><a href="LEVEL3.html">LEVEL3</a></li><li><a href="MeleeDefender.html">MeleeDefender</a></li><li><a href="Mine.html">Mine</a></li><li><a href="NonShootingDefender.html">NonShootingDefender</a></li><li><a href="NormalZombie.html">NormalZombie</a></li><li><a href="Observer.html">Observer</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Resource.html">Resource</a></li><li><a href="ShootingDefender.html">ShootingDefender</a></li><li><a href="SkeletonArcher.html">SkeletonArcher</a></li><li><a href="floatingMessage.html">floatingMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#animate">animate</a></li><li><a href="global.html#arrowImage">arrowImage</a></li><li><a href="global.html#back">back</a></li><li><a href="global.html#bosses">bosses</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#canvasPosition">canvasPosition</a></li><li><a href="global.html#card1">card1</a></li><li><a href="global.html#card2">card2</a></li><li><a href="global.html#card3">card3</a></li><li><a href="global.html#card4">card4</a></li><li><a href="global.html#chooseDefender">chooseDefender</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#clearGameElements">clearGameElements</a></li><li><a href="global.html#collision">collision</a></li><li><a href="global.html#controlsBar">controlsBar</a></li><li><a href="global.html#createDefender">createDefender</a></li><li><a href="global.html#ctx">ctx</a></li><li><a href="global.html#defender1">defender1</a></li><li><a href="global.html#defender2">defender2</a></li><li><a href="global.html#defender3">defender3</a></li><li><a href="global.html#drawArrows">drawArrows</a></li><li><a href="global.html#drawDefenderCards">drawDefenderCards</a></li><li><a href="global.html#drawDefenders">drawDefenders</a></li><li><a href="global.html#drawProjectiles">drawProjectiles</a></li><li><a href="global.html#enemy1">enemy1</a></li><li><a href="global.html#enemy2">enemy2</a></li><li><a href="global.html#gameElements">gameElements</a></li><li><a href="global.html#gameSettings">gameSettings</a></li><li><a href="global.html#getDefenderCost">getDefenderCost</a></li><li><a href="global.html#handleDefenders">handleDefenders</a></li><li><a href="global.html#handleGameGrid">handleGameGrid</a></li><li><a href="global.html#handleGameStatus">handleGameStatus</a></li><li><a href="global.html#mine">mine</a></li><li><a href="global.html#model">model</a></li><li><a href="global.html#mouse">mouse</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#sett">sett</a></li><li><a href="global.html#skeletonArcherType">skeletonArcherType</a></li><li><a href="global.html#stopGame">stopGame</a></li><li><a href="global.html#updateDefenderCards">updateDefenderCards</a></li><li><a href="global.html#updateEnemies">updateEnemies</a></li><li><a href="global.html#updateProjectiles">updateProjectiles</a></li><li><a href="global.html#updateResources">updateResources</a></li><li><a href="global.html#updateSkeletonArcherShooting">updateSkeletonArcherShooting</a></li><li><a href="global.html#view">view</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun May 07 2023 14:32:38 GMT+0200 (за центральноєвропейським літнім часом)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
