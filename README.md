@@ -1,6 +1,9 @@
     <h1>University Project on the Subject ZTIAPL</h1>
-    <p>Welcome to the documentation for my university project on the subject ZTIAPL. The aim of this project was to create a web game using JavaScript in an Object-Oriented Programming (OOP) style. I'm excited to share my game, which is a web-based version of the popular "Plants vs. Zombies" game, but with a twist – it's now "People vs. Zombies".</p>
+    
+    <p>Welcome to the documentation for my university project on the subject ZTIAPL. The aim of this project was to create a web game using JavaScript in an Object-Oriented Programming (OOP) style. I'm excited to        share my game, which is a web-based version of the popular "Plants vs. Zombies" game, but with a twist – it's now "People vs. Zombies".</p>
+    
     <h2>Project Overview</h2>
+    
     <p>The main objective was to develop a fully functional web game that demonstrates the principles of OOP. My rendition of "People vs. Zombies" includes engaging gameplay, strategic elements, and increasing difficulty across multiple levels.</p>
 
 
