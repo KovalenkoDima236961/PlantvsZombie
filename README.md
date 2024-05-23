@@ -14,25 +14,25 @@
         <li><strong>Engaging Graphics:</strong> The game features visually appealing graphics that draw players into the action and enhance the overall gaming experience.</li>
     </ul>
 
-    <h2>How to Play</h2>
-    <ol>
+<h2>How to Play</h2>
+<ol>
         <li><strong>Starting the Game:</strong> Start the game "People vs. Zombies".</li>
         <li><strong>Choosing a Level:</strong> Choose one of the proposed game levels in which you will defend yourself against zombies by installing different defenders.</li>
         <li><strong>Controls:</strong> The game is controlled with the mouse.</li>
         <li><strong>Placing People:</strong> The player can place people (defenders) on the lawn by hovering over an empty cell with a black square. To summon additional defenders, hover over the top bar and select from the options.</li>
         <li><strong>Automatic Attack:</strong> When zombies appear, your defenders will automatically attack them. Place your defenders strategically to stop the zombies before they reach your home.</li>
         <li><strong>Earning and Spending Money:</strong> For every zombie you destroy, you get money that can be used to buy new defenders and improve existing ones.</li>
-    </ol>
+</ol>
 
-        <h2>Development Process</h2>
-    <p>The development of this game involved several key stages:</p>
-    <ul>
+<h2>Development Process</h2>
+<p>The development of this game involved several key stages:</p>
+<ul>
         <li><strong>Planning:</strong> Defining the game mechanics, level design, and overall structure of the project.</li>
         <li><strong>Design:</strong> Creating the visual assets and designing the user interface.</li>
         <li><strong>Implementation:</strong> Writing the game code using JavaScript, with a focus on OOP principles to manage game objects and interactions.</li>
         <li><strong>Testing:</strong> Continuously testing the game to ensure smooth gameplay, fixing bugs, and optimizing performance.</li>
         <li><strong>Feedback and Iteration:</strong> Gathering feedback from peers and iterating on the design and functionality to improve the overall experience.</li>
-    </ul>
+</ul>
 
-    <h2>Conclusion</h2>
-    <p>This project has been a rewarding experience, allowing me to apply OOP principles in a practical context and create an enjoyable game. I hope you enjoy playing my web version of "People vs. Zombies" as much as I enjoyed developing it.</p>
+<h2>Conclusion</h2>
+<p>This project has been a rewarding experience, allowing me to apply OOP principles in a practical context and create an enjoyable game. I hope you enjoy playing my web version of "People vs. Zombies" as much as I enjoyed developing it.</p>
